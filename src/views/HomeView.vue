@@ -13,7 +13,7 @@ import Keypress from "vue-keypress";
           v-for="i in 15"
           :key="'length-' + i"
           v-show="i >= 2"
-          selected="store.length"
+          :selected="store.length == i || i == 5"
         >
           {{ i }}
         </option>
