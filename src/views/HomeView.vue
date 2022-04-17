@@ -3,8 +3,6 @@ import GuessList from "../components/GuessList.vue";
 import GuessRow from "../components/GuessRow.vue";
 import Keypress from "vue-keypress";
 import { useStore } from "../stores/kirkle";
-
-const store = useStore();
 </script>
 
 <template>
@@ -18,10 +16,10 @@ const store = useStore();
       </select>
       <a @click.stop="reset">New Game</a>
     </div>
-    <GuessList :guesses="store.getGuesses" />
-    <GuessRow :word="word" v-if="!store.gameOver" />
+    <GuessList :guesses="guesses" />
+    <GuessRow :word="word" v-if="!gameOver" />
     <p v-show="notAWord && !gameOver" class="red">Not a word</p>
-    <p v-show="store.gameOver" class="game-over">Game Over!</p>
+    <p v-show="gameOver" class="game-over">Game Over!</p>
   </main>
 
   <Keypress key-event="keyup" @success="keyPressed" />
@@ -48,7 +46,7 @@ export default {
       let key = ev.event.key.toUpperCase();
 
       if (key.length === 1 && key >= "A" && key <= "Z") {
-        if (this.word.length < this.store.wordLength) {
+        if (this.word.length < this.store.length) {
           this.word += key;
         }
       }
@@ -59,7 +57,7 @@ export default {
       }
     },
     tryGuess() {
-      if (this.word.length === parseInt(this.store.wordLength)) {
+      if (this.word.length === parseInt(this.store.length)) {
         if (this.store.checkAnswer(this.word)) {
           this.word = "";
         } else {
@@ -78,6 +76,10 @@ export default {
     },
   },
   computed: {
+    store() {
+      const store = useStore();
+      return store;
+    },
     validLetters() {
       let letters = [];
       for (let i = "A"; i <= "Z"; i++) {
@@ -89,17 +91,20 @@ export default {
 
       return letters;
     },
+    gameOver() {
+      return this.store.gameOver;
+    },
+    guesses() {
+      return this.store.guesses;
+    },
   },
   mounted() {
-    // const init = async () => {
-    //   await this.store.loadWords();
-    //   this.store.newGame(5);
-    // };
-    //
-    // init();
+    const init = async () => {
+      await this.store.loadWords();
+      this.store.newGame(5);
+    };
 
-    this.store.loadWords();
-    this.store.newGame(5);
+    init();
   },
 };
 </script>

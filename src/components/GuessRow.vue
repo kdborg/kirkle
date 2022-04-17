@@ -1,8 +1,5 @@
 <script setup>
 import LetterTile from "../components/LetterTile.vue";
-import { useStore } from "../stores/kirkle";
-
-const store = useStore();
 </script>
 <template>
   <div>
@@ -12,12 +9,18 @@ const store = useStore();
 </template>
 
 <script>
+import { useStore } from "../stores/kirkle";
+
 export default {
   name: "GuessRow",
   props: ["word"],
   computed: {
+    store() {
+      const store = useStore();
+      return store;
+    },
     remaining() {
-      return this.store.wordLength - this.word.length;
+      return this.store.length - this.word.length;
     },
   },
 };

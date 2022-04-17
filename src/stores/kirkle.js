@@ -8,12 +8,6 @@ export const useStore = defineStore("kirkle", {
     words: [],
     gameOver: false,
   }),
-  getters: {
-    wordLength: (state) => state.length,
-    countGuesses: (state) => state.guesses.length,
-    getGuesses: (state) => state.guesses,
-    getGameOver: (state) => state.gameOver,
-  },
   actions: {
     checkAnswer(guess) {
       // Is this a valid word?
@@ -89,23 +83,22 @@ export const useStore = defineStore("kirkle", {
       let r = Math.floor(Math.random() * this.words[length].length);
       this.word = this.words[length][r];
     },
-    loadWords() {
+    async loadWords() {
       for (let i = 1; i <= 15; i++) {
         this.words[i] = [];
       }
 
-      this.words[5] = ["AROSE", "QUEUE"];
-      // await fetch("/twl.txt")
-      //   .then((response) => response.text())
-      //   .then((body) => {
-      //     let lines = body.split("\n");
-      //
-      //     lines.forEach((word) => {
-      //       if (word.length > 0) {
-      //         this.words[word.length].push(word.toUpperCase());
-      //       }
-      //     });
-      //   });
+      await fetch("/kirkle/twl.txt")
+        .then((response) => response.text())
+        .then((body) => {
+          let lines = body.split("\n");
+
+          lines.forEach((word) => {
+            if (word.length > 0) {
+              this.words[word.length].push(word.toUpperCase());
+            }
+          });
+        });
     },
   },
 });
