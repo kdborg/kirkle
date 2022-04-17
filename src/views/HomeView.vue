@@ -18,7 +18,7 @@ import Keypress from "vue-keypress";
           {{ i }}
         </option>
       </select>
-      <!--      <a @click.stop="reset">New Game</a>-->
+      <a @click.stop="reset">New Game</a>
     </div>
     <GuessList :guesses="guesses" />
     <GuessRow :word="word" v-if="!gameOver" />
@@ -73,7 +73,7 @@ export default {
       }
     },
     reset() {
-      this.store.newGame();
+      this.store.newGame(this.store.length);
       this.word = "";
       this.notAWord = false;
     },
