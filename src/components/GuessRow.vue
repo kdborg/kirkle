@@ -16,8 +16,7 @@ export default {
   props: ["word"],
   computed: {
     store() {
-      const store = useStore();
-      return store;
+      return window.theStore;
     },
     remaining() {
       return this.store.length - this.word.length;

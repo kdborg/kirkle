@@ -78,8 +78,7 @@ export default {
   },
   computed: {
     store() {
-      const store = useStore();
-      return store;
+      return window.theStore;
     },
     validLetters() {
       let letters = [];
