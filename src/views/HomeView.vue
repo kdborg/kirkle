@@ -90,9 +90,13 @@ export default {
       return letters;
     },
   },
-  async mounted() {
-    await this.store.loadWords();
-    this.store.newGame(5);
+  mounted() {
+    const init = async () => {
+      await this.store.loadWords();
+      this.store.newGame(5);
+    };
+
+    init();
   },
 };
 </script>

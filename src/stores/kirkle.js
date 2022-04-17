@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useStore = defineStore("kirkle", {
   state: () => ({
-    word: "QUEUE",
+    word: "",
     length: 5,
     guesses: [],
     words: [],
@@ -90,16 +90,19 @@ export const useStore = defineStore("kirkle", {
       this.word = this.words[length][r];
     },
     async loadWords() {
+      for (let i = 1; i <= 15; i++) {
+        this.words[i] = [];
+      }
+
       await fetch("/twl.txt")
         .then((response) => response.text())
         .then((body) => {
-          for (let i = 1; i <= 15; i++) {
-            this.words[i] = [];
-          }
           let lines = body.split("\n");
 
           lines.forEach((word) => {
-            this.words[word.length].push(word.toUpperCase());
+            if (word.length > 0) {
+              this.words[word.length].push(word.toUpperCase());
+            }
           });
         });
     },
