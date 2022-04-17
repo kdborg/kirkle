@@ -2,19 +2,23 @@
 import GuessList from "../components/GuessList.vue";
 import GuessRow from "../components/GuessRow.vue";
 import Keypress from "vue-keypress";
-import { useStore } from "../stores/kirkle";
 </script>
 
 <template>
   <main>
     <div class="settings">
       <label for="setLength">Word Length: </label>
-      <select v-model="length">
-        <option v-for="i in 15" :key="'length-' + i" v-show="i >= 2">
+      <select @change="updateStore">
+        <option
+          v-for="i in 15"
+          :key="'length-' + i"
+          v-show="i >= 2"
+          selected="store.length"
+        >
           {{ i }}
         </option>
       </select>
-      <a @click.stop="reset">New Game</a>
+      <!--      <a @click.stop="reset">New Game</a>-->
     </div>
     <GuessList :guesses="guesses" />
     <GuessRow :word="word" v-if="!gameOver" />
@@ -37,7 +41,6 @@ export default {
   data() {
     return {
       word: "",
-      length: 5,
       notAWord: false,
     };
   },
@@ -70,8 +73,15 @@ export default {
       }
     },
     reset() {
-      console.log(this.length);
-      this.store.newGame(this.length);
+      this.store.newGame();
+      this.word = "";
+      this.notAWord = false;
+    },
+    updateStore() {
+      const select = document.getElementsByTagName("select")[0];
+      this.store.length = select.options[select.selectedIndex].value;
+
+      this.store.newGame(this.store.length);
       this.word = "";
       this.notAWord = false;
     },
@@ -101,7 +111,7 @@ export default {
   mounted() {
     const init = async () => {
       await this.store.loadWords();
-      this.store.newGame(this.length);
+      this.store.newGame(this.store.length);
     };
 
     init();

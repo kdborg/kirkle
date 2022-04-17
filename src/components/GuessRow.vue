@@ -9,8 +9,6 @@ import LetterTile from "../components/LetterTile.vue";
 </template>
 
 <script>
-import { useStore } from "../stores/kirkle";
-
 export default {
   name: "GuessRow",
   props: ["word"],
