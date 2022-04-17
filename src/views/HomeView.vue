@@ -70,6 +70,7 @@ export default {
       }
     },
     reset() {
+      console.log(this.length);
       this.store.newGame(this.length);
       this.word = "";
       this.notAWord = false;
@@ -101,7 +102,7 @@ export default {
   mounted() {
     const init = async () => {
       await this.store.loadWords();
-      this.store.newGame(5);
+      this.store.newGame(this.length);
     };
 
     init();
