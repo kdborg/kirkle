@@ -91,12 +91,15 @@ export default {
     },
   },
   mounted() {
-    const init = async () => {
-      await this.store.loadWords();
-      this.store.newGame(5);
-    };
+    // const init = async () => {
+    //   await this.store.loadWords();
+    //   this.store.newGame(5);
+    // };
+    //
+    // init();
 
-    init();
+    this.store.loadWords();
+    this.store.newGame(5);
   },
 };
 </script>
