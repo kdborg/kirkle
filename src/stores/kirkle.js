@@ -53,7 +53,11 @@ export const useStore = defineStore("kirkle", {
 
       for (let i = 0; i < this.length; i++) {
         let c = guess[i];
-        if (wordCounts.has(c) && wordCounts.get(c) > 0) {
+        if (
+          wordCounts.has(c) &&
+          wordCounts.get(c) > 0 &&
+          result[i][1] == "wrong"
+        ) {
           result[i][1] = "wrong-position";
           let count = wordCounts.get(c) - 1;
           if (count > 0) {
